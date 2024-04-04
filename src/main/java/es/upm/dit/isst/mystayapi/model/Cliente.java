@@ -19,7 +19,7 @@ public class Cliente {
     private Integer id;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "idcliente", nullable = false)
     @Column(nullable = false, unique=true)
     private String dni;
 
