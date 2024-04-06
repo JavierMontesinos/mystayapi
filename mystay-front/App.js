@@ -18,6 +18,9 @@ import CafeteriaScreen from './screens/CafeteriaScreen';
 import PremiumScreen from './screens/PremiumScreen';
 
 import AuthContext from './utils/AuthProvider';
+import CheckOutScreen from './screens/CheckOutScreen';
+import ComfortServiceScreen from './screens/ComfortServiceScreen';
+import NewReserveScreen from './screens/NewReserveScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -89,11 +92,19 @@ const App = () => {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
+        <Stack.Navigator 
+          screenOptions={({ route }) => ({
+            headerShown: false,
+          })}
+        >
           {state.userToken == null ? (
             <Stack.Screen name="Login" component={LoginScreen} />
           ) : (
-            <TabNavigator />
+            <>
+              <Stack.Screen name="RootNav" component={HamburguerMenu} />
+            </>
           )}
+        </Stack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>
   );
@@ -102,8 +113,17 @@ const App = () => {
 
 const HamburguerMenu = () => {
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="drawer" component={TabNavigator} />
+    <Drawer.Navigator 
+      screenOptions={({ route }) => ({
+          headerTitle: ""
+      })}
+    >
+      <Drawer.Screen name="a" options={{ title: "" }} component={TabNavigator} />
+      <Drawer.Screen name="Check-out" component={CheckOutScreen} />
+      <Drawer.Screen name="Nueva reserva" component={NewReserveScreen} />
+      <Drawer.Screen name="Servicios confort" component={ComfortServiceScreen} />
+      <Drawer.Screen name="Incidencias" component={ProfileScreen} />
+      <Drawer.Screen name="Otros servicios" component={ProfileScreen} />
     </Drawer.Navigator>
   );
 }
@@ -114,7 +134,7 @@ const TabNavigator = () => {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarIcon: ({ color }) => { // Set icon color to blue regardless of active/inactive state
+        tabBarIcon: ({ color }) => {
           let iconName;
     
           if (route.name === 'Profile') {

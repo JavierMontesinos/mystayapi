@@ -1,18 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const TransportScreen = () => {
+const CheckOutScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>TRANSPORTE</Text>
+      <Text style={styles.title}>CHECK-OUT</Text>
       <View style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Taxi</Text>
+        <Text style={styles.menuItemText}>Pagar</Text>
       </View>
       <View style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Transporte al aeropuerto</Text>
+        <Text style={styles.menuItemText}>Ver factura</Text>
       </View>
       <View style={styles.menuItem}>
-        <Text style={styles.menuItemText}>BILLETES</Text>
+        <Text style={styles.menuItemText}>Anular llave</Text>
       </View>
     </View>
   );
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TransportScreen;
+export default CheckOutScreen;
