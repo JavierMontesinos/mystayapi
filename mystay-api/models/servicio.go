@@ -2,11 +2,14 @@ package models
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Servicio struct {
-	ID          int     `gorm:"primary_key"`
-	ReservaID   Reserva `gorm:"foreignKey:ID"`
+	gorm.Model
+	ID          int    `gorm:"primary_key"`
+	ClienteID   Client `gorm:"foreignKey:ID"`
 	Tipo        string
 	Descripcion string
 	Precio      float64

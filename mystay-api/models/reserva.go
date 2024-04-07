@@ -2,9 +2,12 @@ package models
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Reserva struct {
+	gorm.Model
 	ID               int    `gorm:"primary_key"`
 	ClienteID        Client `gorm:"foreignKey:ID"`
 	FechaInicio      time.Time
