@@ -1,18 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import CustomButton from '../components/CustomButton';
+import TitleText from '../components/TitleText'
 
 const TransportScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>TRANSPORTE</Text>
-      <View style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Taxi</Text>
+      <TitleText text={"TRANSPORTE"} />
+      <View style={styles.buttonContainer}>
+        <CustomButton icon={""} text={"Taxi"} style={styles.text} /> 
       </View>
-      <View style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Transporte al aeropuerto</Text>
+      <View style={styles.buttonContainer}>
+        <CustomButton icon={""} text={"Transporte al aeropuerto"} />
       </View>
-      <View style={styles.menuItem}>
-        <Text style={styles.menuItemText}>BILLETES</Text>
+      <View style={styles.buttonContainer}>
+        <CustomButton icon={""} text={"Billetes"} />
       </View>
     </View>
   );
@@ -24,23 +26,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
+  buttonContainer: {
+    marginTop: 20,
   },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  menuItemText: {
-    fontSize: 16,
-    marginLeft: 10,
-  },
-  starIcon: {
-    width: 20,
-    height: 20,
-  },
+  text: {
+    textAlign: 'center',
+  }
 });
 
 export default TransportScreen;
