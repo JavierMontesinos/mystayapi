@@ -5,6 +5,6 @@ type Client struct {
 	DNI     string `gorm:"column:dni;unique;not null"`
 	Nhab    uint
 	Premium bool
-	Gasto   uint
-	Pagado  string
+	Gasto   float64
+	Pagado  bool
 }
