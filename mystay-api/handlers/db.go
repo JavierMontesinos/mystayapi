@@ -1,26 +1,21 @@
-package handler
+package handlers
 
 import (
-	"context"
-	"errors"
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
-	"strconv"
 	"time"
 
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-type postgres struct {
-	Pool *pgxpool.Pool
+type pg struct {
+	Gorm *gorm.DB
 }
 
-func NewPG() (postgres, error) {
+func NewPG() (pg, error) {
 	var err error
-
 	numberTries := 10
 
 	for i := 0; i <= numberTries; i++ {
@@ -34,23 +29,14 @@ func NewPG() (postgres, error) {
 		time.Sleep(30 * time.Second)
 	}
 
-	return postgres{}, fmt.Errorf("Did %d attempts and failed all of them: %v", numberTries, err)
+	return pg{}, fmt.Errorf("Did %d attempts and failed all of them: %v", numberTries, err)
 }
 
-func connectPostgres() (postgres, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	// New pool no config
-	dbPool, err := pgxpool.New(ctx, os.Getenv("DBURL"))
+func connectPostgres() (pg, error) {
+	db, err := gorm.Open(postgres.Open(os.Getenv("DBURL")), &gorm.Config{})
 	if err != nil {
-		return postgres{}, fmt.Errorf("unable to create connection pool: %w", err)
+		return pg{}, fmt.Errorf("unable to create connection pool: %w", err)
 	}
 
-	if err = dbPool.Ping(ctx); err != nil {
-		dbPool.Close()
-		return postgres{}, fmt.Errorf("unable to create ping database: %w", err)
-	}
-
-	return postgres{Pool: dbPool}, nil
+	return pg{Gorm: db}, nil
 }

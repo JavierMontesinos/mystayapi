@@ -1,9 +1,10 @@
 package models
 
 type Client struct {
-	Firstname string `json:"firstname"`
-	Surname   string `json:"surname"`
-	Address   string `json:"address"`
-	ZIP       string `json:"zip"`
-	Email     string `json:"email"`
+	ID      uint   `gorm:"primary_key"`
+	DNI     string `gorm:"column:dni;unique;not null"`
+	Nhab    uint
+	Premium bool
+	Gasto   uint
+	Pagado  string
 }

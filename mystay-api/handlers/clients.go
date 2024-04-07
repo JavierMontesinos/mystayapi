@@ -1,26 +1,27 @@
 package handlers
 
 import (
+	"github.com/JavierMontesinos/mystayapi/mystay-api/models"
+	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"
-
-	"github.com/labstack/echo/v4"
+	"strconv"
 )
 
-func (pg postgres) GetUser(c echo.Context) error {
+func (p pg) GetUser(c echo.Context) error {
 	uIdStr := c.QueryParam("id")
 	uID, err := strconv.Atoi(uIdStr)
 	if err != nil {
 		log.Println("Invalid id passed: ", uIdStr)
-		return echo.NewHTTPError(http.InternalServerError, "No se puede recuperar usuario")
-	}
-	user := User{
-		ID:       uID,
-		Username: "example_user",
-		Email:    "user@example.com",
+		return echo.NewHTTPError(http.StatusNotFound, "No se puede recuperar usuario")
 	}
 
-	return c.JSON(http.StatusOK, user)
+	log.Println(uID)
+
+	var client models.Client
+	if err := p.Gorm.First(&client, uID).Error; err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "Cliente not found"})
+	}
+
+	return c.JSON(http.StatusOK, client)
 }
-
-func (pg postgres) EditUser(c echo)
