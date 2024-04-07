@@ -5,8 +5,8 @@ import (
 )
 
 type Reserva struct {
-	ID               int `gorm:"primary_key"`
-	ClienteID        int `gorm:"foreignKey:Client.ID"`
+	ID               int    `gorm:"primary_key"`
+	ClienteID        Client `gorm:"foreignKey:ID"`
 	FechaInicio      time.Time
 	FechaFinal       time.Time
 	NumeroHabitacion int

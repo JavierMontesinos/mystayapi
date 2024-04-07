@@ -5,8 +5,8 @@ import (
 )
 
 type Servicio struct {
-	ID          int `gorm:"primary_key"`
-	ReservaID   int `gorm:"foreignKey:Client.ID"`
+	ID          int     `gorm:"primary_key"`
+	ReservaID   Reserva `gorm:"foreignKey:ID"`
 	Tipo        string
 	Descripcion string
 	Precio      float64
