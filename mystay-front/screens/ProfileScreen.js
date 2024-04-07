@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 const ProfileScreen = () => {
   return (
@@ -7,9 +9,10 @@ const ProfileScreen = () => {
       <Text style={styles.title}>Mi Perfil</Text>
       <Text style={styles.userInfo}>Nombre: John Doe</Text>
       <Text style={styles.userInfo}>Email: johndoe@example.com</Text>
-      <View style={styles.buttonContainer}>
-        <Button title="Edita tus datos personales" onPress={() => {}} />
-      </View>
+      <TouchableOpacity style={styles.button}>
+        <MaterialCommunityIcons name="pencil" size={20} color="white" style={styles.icon} />
+        <Text style={styles.text}>Edita tus datos personales</Text>
+      </TouchableOpacity>
       <View style={styles.buttonContainer}>
         <Button title="Consulta tus reservas" onPress={() => {}} />
       </View>
@@ -41,6 +44,21 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 20,
+  },
+  button: {
+    backgroundColor: '#1d2b42',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  text: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 

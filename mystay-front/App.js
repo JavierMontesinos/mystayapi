@@ -78,19 +78,18 @@ const App = () => {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        <Stack.Navigator 
-          screenOptions={({ route }) => ({
-            headerShown: false,
-          })}
-        >
+      <Stack.Navigator 
+            screenOptions={({ route }) => ({
+              headerShown: false,
+            })}
+          >
           {state.userToken == null ? (
+          
             <Stack.Screen name="Login" component={LoginScreen} />
           ) : (
-            <>
-              <Stack.Screen name="(drawer)" component={DrawerNav} />
-            </>
+              <Stack.Screen name="Dnav" component={DrawerNav} />
           )}
-        </Stack.Navigator>
+        </Stack.Navigator>  
       </NavigationContainer>
     </AuthContext.Provider>
   );

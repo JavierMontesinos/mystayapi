@@ -1,21 +1,19 @@
 import React from "react";
-import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItem, createDrawerNavigator } from '@react-navigation/drawer';
 import TabNavigator from "./TabNav";
-import NewReserveScreen from '../screens/NewReserveScreen'
-
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerNav = (props) => {
+  return(
     <DrawerContentScrollView {...props}>
-        <DrawerItemList {...props}>
-            <DrawerItem label="Check-out" onPress={() => alert("a")} />
-            <DrawerItem label="Nueva reserva" onPress={() => alert("a")} />
-            <DrawerItem label="Servicios confort" onPress={() => alert("a")} />
-            <DrawerItem label="Incidencias" onPress={() => alert("a")} />
-            <DrawerItem label="Otros servicios" onPress={() => alert("a")} />
-        </DrawerItemList>
+      <DrawerItem label="Check-out" onPress={() => props.navigation.navigate('(checkout)')} />
+      <DrawerItem label="Nueva reserva" onPress={() => props.navigation.navigate('(reserve)')} />
+      <DrawerItem label="Servicios confort" onPress={() => props.navigation.navigate('(comfort)')} />
+      <DrawerItem label="Incidencias" onPress={() => props.navigation.navigate('(incidents)')} />
+      <DrawerItem label="Otros servicios" onPress={() => props.navigation.navigate('(services)')} />
     </DrawerContentScrollView>
+  );
 }
 
 const DrawerNav = () => {
@@ -27,7 +25,6 @@ const DrawerNav = () => {
             })}
         >
         <Drawer.Screen name="(tabnav)" options={{ }} component={TabNavigator} />
-        <Drawer.Screen name="AD" component={NewReserveScreen} />
       </Drawer.Navigator>
     );
   }

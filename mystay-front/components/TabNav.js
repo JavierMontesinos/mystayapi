@@ -4,8 +4,15 @@ import TransportScreen from '../screens/TransportScreen';
 import CafeteriaScreen from '../screens/CafeteriaScreen';
 import PremiumScreen from '../screens/PremiumScreen';
 
+// Hidden screens
+import CheckOutScreen from '../screens/CheckOutScreen';
+import NewReserveScreen from '../screens/NewReserveScreen';
+import ComfortServiceScreen from '../screens/ComfortServiceScreen'
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import IncidentScreen from '../screens/IncidentScreen';
+import OtherServicesScreen from '../screens/OtherServicesScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -45,6 +52,13 @@ const TabNavigator = () => {
         <Tab.Screen name="Transport" component={TransportScreen} />
         <Tab.Screen name="Cafeteria" component={CafeteriaScreen} />
         <Tab.Screen name="Premium" component={PremiumScreen} />
+        
+        <Tab.Screen name="(checkout)" options={{ tabBarButton: () => {} }} component={CheckOutScreen} />
+        <Tab.Screen name="(reserve)" options={{ tabBarButton: () => {} }} component={NewReserveScreen} />
+        <Tab.Screen name="(comfort)" options={{ tabBarButton: () => {} }} component={ComfortServiceScreen} />
+        <Tab.Screen name="(incidents)" options={{ tabBarButton: () => {} }} component={IncidentScreen} />
+        <Tab.Screen name="(services)" options={{ tabBarButton: () => {} }} component={OtherServicesScreen} />
+      
       </Tab.Navigator>
     );
   }
