@@ -1,20 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import CustomButton from '../components/CustomButton';
+import { TitleText } from '../components/CustomText'
 
-const CheckOutScreen = () => {
+const CheckOutScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>CHECK-OUT</Text>
-      <View style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Pagar</Text>
-      </View>
-      <View style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Ver factura</Text>
-      </View>
-      <View style={styles.menuItem}>
-        <Text style={styles.menuItemText}>Anular llave</Text>
-      </View>
+  <View style={styles.container}>
+    <TitleText text={"CHECK-OUT"} />
+    <View style={styles.buttonContainer}>
+      <CustomButton icon={""} text={"Pagar"} style={styles.text} func={() => navigation.navigate('(pay)')} /> 
     </View>
+    <View style={styles.buttonContainer}>
+      <CustomButton icon={""} text={"Ver factura"} func={() => alert("Para obtener su factura debe haber realizado el pago de su estencia antes")} />
+    </View>
+    <View style={styles.buttonContainer}>
+      <CustomButton icon={""} text={"Anular llave"} />
+    </View>
+  </View>
   );
 };
 
@@ -24,22 +26,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  menuItemText: {
-    fontSize: 16,
-    marginLeft: 10,
-  },
-  starIcon: {
-    width: 20,
-    height: 20,
+  buttonContainer: {
+    marginTop: 20,
   },
 });
 

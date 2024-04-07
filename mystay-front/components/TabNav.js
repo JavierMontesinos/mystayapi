@@ -7,7 +7,9 @@ import PremiumScreen from '../screens/PremiumScreen';
 // Hidden screens
 import CheckOutScreen from '../screens/CheckOutScreen';
 import NewReserveScreen from '../screens/NewReserveScreen';
-import ComfortServiceScreen from '../screens/ComfortServiceScreen'
+import ComfortServiceScreen from '../screens/ComfortServiceScreen';
+import PayScreen from '../screens/PayScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -58,6 +60,8 @@ const TabNavigator = () => {
         <Tab.Screen name="(comfort)" options={{ tabBarButton: () => {} }} component={ComfortServiceScreen} />
         <Tab.Screen name="(incidents)" options={{ tabBarButton: () => {} }} component={IncidentScreen} />
         <Tab.Screen name="(services)" options={{ tabBarButton: () => {} }} component={OtherServicesScreen} />
+        <Tab.Screen name="(pay)" options={{ tabBarButton: () => {} }} component={PayScreen} />
+        <Tab.Screen name="(profile)" options={{ tabBarButton: () => {} }} component={EditProfileScreen} />
       
       </Tab.Navigator>
     );

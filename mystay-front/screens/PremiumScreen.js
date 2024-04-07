@@ -1,25 +1,27 @@
 import React from 'react';
-import { View, Text, Image, Button } from 'react-native';
+import { View } from 'react-native';
 import { StyleSheet } from 'react-native';
+import CustomButton from '../components/CustomButton';
+import { TitleText } from '../components/CustomText'
 
 const PremiumScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>SERVICIOS DE CAFETERIA</Text>
+      <TitleText text={"SERVICIO DE CAFETERÍA"} />
       <View style={styles.buttonContainer}>
-        <Button title="Reserva en restaurantes" onPress={() => {}} />
+        <CustomButton icon={""} text={"Reserva en restaurantes"} style={styles.text} /> 
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Entradas de espectáculos" onPress={() => {}} />
+        <CustomButton icon={""} text={"Entradas de espectáculos"} />
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Guias turísticos" onPress={() => {}} />
+        <CustomButton icon={""} text={"Guias turísticos"} />
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Compra de articulos" onPress={() => {}} />
+        <CustomButton icon={""} text={"Compra de articulos"} />
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Concierge service" onPress={() => {}} />
+        <CustomButton icon={""} text={"Concierge service"} />
       </View>
     </View>
   );
@@ -30,19 +32,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  userInfo: {
-    marginTop: 20,
-    fontSize: 16,
   },
   buttonContainer: {
     marginTop: 20,
