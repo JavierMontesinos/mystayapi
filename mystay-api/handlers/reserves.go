@@ -32,7 +32,6 @@ func (p pg) NewReserve(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "No se han enviado los datos correctos")
 	}
 
-	log.Println(req.StartDate)
 	if req.StartDate.IsZero() || req.EndDate.IsZero() {
 		return echo.NewHTTPError(http.StatusBadRequest, "Se necesitan tanto a fecha de inicio como la de fin")
 	}

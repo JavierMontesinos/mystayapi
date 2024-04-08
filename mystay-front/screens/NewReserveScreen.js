@@ -5,12 +5,12 @@ import { TitleText, SubTitleText } from '../components/CustomText'
 import CustomButton from '../components/CustomButton';
 import axios from 'axios';
 
-const NewReserveScreen = () => {
+const NewReserveScreen = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
-  const sendReservation = async () => {
+  const sendReservation = async (navigation) => {
     try {
       startDateTemp = new Date(startDate)
       endDateTemp = new Date(endDate)
@@ -18,11 +18,14 @@ const NewReserveScreen = () => {
         startDate: startDateTemp.toISOString(),
         endDate: endDateTemp.toISOString(),
       })
-      const response = await axios.post('http://192.168.1.128:3000/reserves/1', {
+      const response = await axios.post('http://192.168.48.144:3000/reserves/1', {
         startDate: startDateTemp.toISOString(),
         endDate: endDateTemp.toISOString(),
       });
 
+      alert("Se ha reservado correctamente")
+
+      navigation.navigate("Profile")
       console.log('Reservation sent successfully:', response.data);
     } catch (error) {
       alert(error.response.data.message)
@@ -71,7 +74,7 @@ const NewReserveScreen = () => {
         <Text style={styles.dateValue}>{endDate || 'Sin fecha seleccionada'}</Text>
       </View>
       <View style={{ flex: 1, alignItems: 'flex-end', marginTop: 20}}>
-        <CustomButton icon={""} text={"Submit"} func={sendReservation} />
+        <CustomButton icon={""} text={"Submit"} func={() => sendReservation(navigation)} />
       </View>
     </View>
   );

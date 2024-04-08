@@ -11,7 +11,7 @@ const PayScreen = ({ navigation }) => {
     
     const handlePayment = async (navigation) => {
       try {
-        const response = await axios.post('http://192.168.1.128:3000/pay/1', {
+        const response = await axios.post('http://192.168.48.144:3000/pay/1', {
           bank,
           cvv,
         });

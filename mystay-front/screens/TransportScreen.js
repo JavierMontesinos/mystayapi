@@ -16,8 +16,8 @@ const TransportScreen = () => {
       };
   
       // Send POST request to the server
-      const response = await axios.post('http://192.168.1.128:3000/services/1', serviceData);
-  
+      const response = await axios.post('http://192.168.48.144:3000/services/1', serviceData);
+      alert(`Se ha pedido correctamente el servicio de ${tipo}`)
       console.log('Service created successfully:', response.data);
     } catch (error) {
       console.error('Error creating service:', error);
@@ -33,7 +33,7 @@ const TransportScreen = () => {
         <CustomButton icon={""} text={"Taxi"} style={styles.text} func={() => postService("taxi", "Recogerme en taxi de inmediato en mi localización")} /> 
       </View>
       <View style={styles.buttonContainer}>
-        <CustomButton icon={""} text={"Transporte al aeropuerto"}  func={() => postService("recoger aeropuerto", "Recogerme del aeropuerto de inmediato para ir al hotel")}/>
+        <CustomButton icon={""} text={"Transporte al aeropuerto"}  func={() => postService("recoger en aeropuerto", "Recogerme del aeropuerto de inmediato para ir al hotel")}/>
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton icon={""} text={"Billetes"} />
