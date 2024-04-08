@@ -11,7 +11,7 @@ const ProfileScreen = ({ navigation }) => {
         <CustomButton icon={"pencil"} text={"Edita tus datos personales"} func={() => navigation.navigate('(profile)')} /> 
       </View>
       <View style={styles.buttonContainer}>
-        <CustomButton icon={"book"} text={"Consulta tus reservas"} />
+        <CustomButton icon={"book"} text={"Consulta tus reservas"} func={() => navigation.navigate('(reserves)')} />
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton icon={"star"} text={"Hazte premium"} />

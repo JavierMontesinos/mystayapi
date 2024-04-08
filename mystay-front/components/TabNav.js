@@ -15,6 +15,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import IncidentScreen from '../screens/IncidentScreen';
 import OtherServicesScreen from '../screens/OtherServicesScreen';
+import ViewReservesScreen from '../screens/ViewReservesScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -62,6 +63,7 @@ const TabNavigator = () => {
         <Tab.Screen name="(services)" options={{ tabBarButton: () => {} }} component={OtherServicesScreen} />
         <Tab.Screen name="(pay)" options={{ tabBarButton: () => {} }} component={PayScreen} />
         <Tab.Screen name="(profile)" options={{ tabBarButton: () => {} }} component={EditProfileScreen} />
+        <Tab.Screen name="(reserves)" options={{ tabBarButton: () => {} }} component={ViewReservesScreen} />
       
       </Tab.Navigator>
     );
