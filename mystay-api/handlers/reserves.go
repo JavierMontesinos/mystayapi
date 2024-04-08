@@ -14,6 +14,12 @@ type ReservationRequest struct {
 	EndDate   time.Time `json:"endDate"`
 }
 
+type ReservationInfo struct {
+	StartDate time.Time `json:"startDate"`
+	EndDate   time.Time `json:"endDate"`
+	Hotel     string    `json:"hotel"`
+}
+
 type PaymentData struct {
 	Bank string `json:"bank"`
 	CVV  string `json:"cvv"`
@@ -50,6 +56,33 @@ func (p pg) NewReserve(c echo.Context) error {
 	}
 
 	return c.NoContent(http.StatusOK)
+}
+
+func (p pg) GetReserves(c echo.Context) error {
+	uIdStr := c.Param("id")
+	uID, err := parseClientId(uIdStr)
+	if err != nil {
+		return err
+	}
+
+	var reserves []models.Reserva
+	if dbc := p.Gorm.Where("cliente_id = ?", uID).Find(&reserves); dbc.Error != nil {
+		log.Println("Error retrieving reserves from database: ", dbc.Error)
+		return echo.NewHTTPError(http.StatusInternalServerError, "Error retrieving reserves from database")
+	}
+
+	var reserveResponse []ReservationInfo
+	for _, reserve := range reserves {
+		reserveResp := ReservationInfo{
+			StartDate: reserve.FechaInicio,
+			EndDate:   reserve.FechaFinal,
+			Hotel:     "NH Hotel",
+		}
+
+		reserveResponse = append(reserveResponse, reserveResp)
+	}
+
+	return c.JSON(http.StatusOK, reserveResponse)
 }
 
 func (p pg) CheckOutPay(c echo.Context) error {

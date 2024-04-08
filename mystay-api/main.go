@@ -37,6 +37,7 @@ func main() {
 	e.PUT("/clients/:id", routes.UpdateClient)
 
 	e.POST("/reserves/:id", routes.NewReserve)
+	e.GET("/reserves/:id", routes.GetReserves)
 
 	e.POST("/services/:id", routes.NewService)
 
