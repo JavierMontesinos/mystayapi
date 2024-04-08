@@ -1,11 +1,13 @@
 package handlers
 
 import (
-	"github.com/JavierMontesinos/mystayapi/mystay-api/models"
-	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/JavierMontesinos/mystayapi/mystay-api/models"
+	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
 type UserData struct {
@@ -80,4 +82,34 @@ func (p pg) UpdateClient(c echo.Context) error {
 
 	return c.NoContent(http.StatusOK)
 
+}
+
+func (p pg) Login(c echo.Context) error {
+	type LoginStruct struct {
+		DNI  string `json:"dni"`
+		Nhab string `json:"nhab"`
+	}
+
+	var client LoginStruct
+	if err := c.Bind(&client); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Datos no válidos")
+	}
+
+	nHab, err := strconv.Atoi(client.Nhab)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Datos no válidos")
+	}
+
+	// Check if user exists in the database
+	var foundUser models.Client
+	if err := p.Gorm.Where("dni = ? AND nhab = ?", client.DNI, nHab).First(&foundUser).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return echo.NewHTTPError(http.StatusUnauthorized, "DNI o Número de habitación incorrectos")
+		}
+		return echo.NewHTTPError(http.StatusInternalServerError, "Database error")
+	}
+
+	// TODO: add jwt
+	authToken := "your_generated_auth_token"
+	return c.JSON(http.StatusOK, map[string]string{"authToken": authToken})
 }

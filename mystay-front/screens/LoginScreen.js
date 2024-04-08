@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { TitleText } from '../components/CustomText';
+import CustomButton from '../components/CustomButton';
 
 import AuthContext from '../utils/AuthProvider';
 
@@ -11,7 +13,7 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>MYSTAY</Text>
+      <TitleText text={"MYSTAY"} />
       <TextInput
         style={styles.input}
         placeholder="DNI"
@@ -24,7 +26,7 @@ const LoginScreen = () => {
         value={nhab}
         onChangeText={setNhab}
       />
-      <Button title="Login" onPress={() => signIn({ dni, nhab })} />
+      <CustomButton text="Login" func={() => signIn({ dni, nhab })} />
     </View>
   );
 };

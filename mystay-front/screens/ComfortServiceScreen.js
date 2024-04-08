@@ -1,13 +1,34 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { CheckBox } from 'react-native-elements';
-
+import { TitleText } from '../components/CustomText';
+import axios from 'axios';
+import CustomButton from '../components/CustomButton';
 
 const ComfortServiceScreen = () => {
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
   const [isChecked3, setIsChecked3] = useState(false);
   const [isChecked4, setIsChecked4] = useState(false);
+
+  const postService = async (tipo, descripcion) => {
+    try {
+      const serviceData = {
+        tipo,
+        descripcion: "Servicio comfort",
+        fecha: new Date().toISOString()
+      };
+  
+      const response = await axios.post('http://192.168.1.141:3000/services/1', serviceData);
+      console.log('Service created successfully:', tipo);
+      return true
+    } catch (error) {
+      console.log(error.response.data)
+      console.error('Error creating service:', error);
+      return false
+    }
+  };
+
   const handleSubmit = () => {
     const selectedServices = [
       { name: 'Ropa de cama', checked: isChecked1 },
@@ -16,12 +37,12 @@ const ComfortServiceScreen = () => {
       { name: 'Productos de baño', checked: isChecked4 },
     ];
     const selectedItems = selectedServices.filter(service => service.checked);
-    const selectedServiceNames = selectedItems.map(service => service.name);
+    const selectedServiceNames = selectedItems.map(service => service.name).filter(name => postService(name));
     alert(`Servicios Seleccionados: ${selectedServiceNames.join(', ')}`);
   };
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 20, marginBottom: 20 }}>SERVICIOS</Text>
+      <TitleText text={"SERVICIOS"} />
       <View style={styles.serviceList}>
         <View style={styles.serviceItem}>
           <Text style={styles.serviceName}>Ropa de cama</Text>
@@ -40,7 +61,7 @@ const ComfortServiceScreen = () => {
           <CheckBox center checked={isChecked4} onPress={() => setIsChecked4(!isChecked4)} checkedColor='blue'/>
         </View>
       </View>
-      <Button title="Submit" onPress={handleSubmit} />
+      <CustomButton text="Submit" func={handleSubmit} />
     </View>
 
   );

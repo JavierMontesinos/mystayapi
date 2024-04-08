@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
+import { SubTitleText } from '../components/CustomText';
+import CustomButton from '../components/CustomButton';
 
 const QuestionnaireScreen = ({ navigation }) => {
   const [incidentText, setIncidentText] = useState('');
@@ -11,7 +13,7 @@ const QuestionnaireScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Escribe tu incidencia:</Text>
+      <SubTitleText text={"Escribe tu incidencia:"} />
       <TextInput
         style={styles.input}
         multiline
@@ -19,7 +21,7 @@ const QuestionnaireScreen = ({ navigation }) => {
         value={incidentText}
         onChangeText={(text) => setIncidentText(text)}
       />
-      <Button title="Enviar Incidencia" onPress={handleSubmit} />
+      <CustomButton text={"Enviar Incidencia"} func={handleSubmit} />
     </View>
   );
 };

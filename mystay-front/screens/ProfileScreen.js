@@ -3,7 +3,11 @@ import { View, StyleSheet, Button } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import { TitleText } from '../components/CustomText'
 
+import AuthContext from '../utils/AuthProvider';
+
 const ProfileScreen = ({ navigation }) => {
+  const { signOut } = React.useContext(AuthContext);
+  
   return (
     <View style={styles.container}>
       <TitleText text={"MI PERFIL"} />
@@ -15,6 +19,9 @@ const ProfileScreen = ({ navigation }) => {
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton icon={"star"} text={"Hazte premium"} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <CustomButton icon={""} text={"Logout"} func={signOut} />
       </View>
     </View>
   );

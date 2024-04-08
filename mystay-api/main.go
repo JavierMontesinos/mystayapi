@@ -24,7 +24,7 @@ func main() {
 
 	routes.Gorm.AutoMigrate(&models.Servicio{}, &models.Reserva{}, &models.Client{})
 	client := models.Client{
-		DNI:     "12390451X",
+		DNI:     "12345678X",
 		Nhab:    100,
 		Premium: true,
 		Gasto:   1000,
@@ -32,6 +32,8 @@ func main() {
 	}
 
 	routes.Gorm.Create(&client)
+
+	e.POST("/login", routes.Login)
 
 	e.GET("/clients/:id", routes.GetClient)
 	e.PUT("/clients/:id", routes.UpdateClient)

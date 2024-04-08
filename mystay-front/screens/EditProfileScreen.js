@@ -14,7 +14,7 @@ const EditProfileScreen = ({ navigation }) => {
   const handleSubmit = async (navigation) => {
     try {
         const user = { firstName, lastName, address, zip, email };
-        const response = await axios.put('http://192.168.48.144:3000/clients/1', user);
+        const response = await axios.put('http://192.168.1.141:3000/clients/1', user);
         console.log('PUT request successful:', response.data);
 
         alert('Datos actualizados');
@@ -26,7 +26,7 @@ const EditProfileScreen = ({ navigation }) => {
 
   const getUserData = async () => {
     try {
-      const response = await axios.get('http://192.168.48.144:3000/clients/1');
+      const response = await axios.get('http://192.168.1.141:3000/clients/1');
       const user = response.data;
       setFirstName(user.firstName);
       setLastName(user.lastName);

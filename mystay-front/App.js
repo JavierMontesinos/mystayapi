@@ -9,6 +9,8 @@ import LoginScreen from './screens/LoginScreen';
 
 import AuthContext from './utils/AuthProvider';
 import DrawerNav from './components/DrawerNav';
+import axios from 'axios';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -60,12 +62,22 @@ const App = () => {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async (data) => {
-        // TODO: Hacer API request a nuestro springboot
-        console.log(data);
-        const dummyToken = 'dummy-auth-token';
-        await SecureStore.setItemAsync('userToken', dummyToken);
-        dispatch({ type: 'SIGN_IN', token: dummyToken });
+      signIn: async (postData) => {
+        try {
+          console.log(postData)
+          const response = await axios.post('http://192.168.1.141:3000/login', postData);
+
+          // Save the authToken to SecureStore
+          let authToken = response.data.authToken
+          await SecureStore.setItemAsync('userToken', authToken);
+          dispatch({ type: 'SIGN_IN', token: authToken });
+
+          console.log('Auth token:', authToken);
+      } catch (error) {
+        alert(error.response.data.message)
+        console.error('Error:', error.message);
+      }
+
       },
       signOut: async () => {
         await SecureStore.deleteItemAsync('userToken');
