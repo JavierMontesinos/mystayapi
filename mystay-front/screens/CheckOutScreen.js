@@ -10,7 +10,7 @@ const CheckOutScreen = ({ navigation }) => {
       const response = await axios.get('http://192.168.1.141:3000/factura/1');
       alert(`Pagado: ${response.data.message}`)
     } catch (error) {
-      alert(response.data.message)
+      alert(error.response.data.message)
     }
   };
 

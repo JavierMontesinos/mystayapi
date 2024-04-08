@@ -135,7 +135,7 @@ func (p pg) GetFactura(c echo.Context) error {
 	}
 
 	if !client.Pagado {
-		return echo.NewHTTPError(http.StatusForbidden, "Ya se ha pagado")
+		return echo.NewHTTPError(http.StatusForbidden, "Para obtener su factura debe haber realizado el pago de su estancia antes")
 	}
 
 	return c.JSON(http.StatusOK, map[string]float64{"message": client.Gasto})
