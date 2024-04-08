@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
 import { TitleText } from '../components/CustomText';
 import CustomButton from '../components/CustomButton';
 
@@ -14,6 +14,11 @@ const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <TitleText text={"MYSTAY"} />
+      <Image
+        source={require('../assets/MyStayLogo.png')}
+        style={styles.image}
+        resizeMode="contain"
+      />
       <TextInput
         style={styles.input}
         placeholder="DNI"
@@ -49,6 +54,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderWidth: 1,
     borderColor: '#ccc',
+  },
+  image: {
+    width: 200, 
+    height: 200, 
   },
 });
 
