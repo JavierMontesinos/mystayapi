@@ -2,8 +2,18 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import { TitleText } from '../components/CustomText'
+import axios from 'axios';
 
 const CheckOutScreen = ({ navigation }) => {
+  const handleFactura = async () => {
+    try {
+      const response = await axios.get('http://192.168.1.128:3000/factura/1');
+      alert(`Pagado: ${response.data.message}`)
+    } catch (error) {
+      alert(response.data.message)
+    }
+  };
+
   return (
   <View style={styles.container}>
     <TitleText text={"CHECK-OUT"} />
@@ -11,7 +21,7 @@ const CheckOutScreen = ({ navigation }) => {
       <CustomButton icon={""} text={"Pagar"} style={styles.text} func={() => navigation.navigate('(pay)')} /> 
     </View>
     <View style={styles.buttonContainer}>
-      <CustomButton icon={""} text={"Ver factura"} func={() => alert("Para obtener su factura debe haber realizado el pago de su estencia antes")} />
+      <CustomButton icon={""} text={"Ver factura"} func={handleFactura} />
     </View>
     <View style={styles.buttonContainer}>
       <CustomButton icon={""} text={"Anular llave"} />

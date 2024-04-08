@@ -9,9 +9,9 @@ import (
 type Servicio struct {
 	gorm.Model
 	ID          int    `gorm:"primary_key"`
-	ClienteID   Client `gorm:"foreignKey:ID"`
+	ClienteID   int    `gorm:"not null"`
+	Client      Client `gorm:"foreignKey:ClienteID"`
 	Tipo        string
 	Descripcion string
-	Precio      float64
 	Fecha       time.Time
 }

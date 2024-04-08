@@ -12,14 +12,21 @@ const NewReserveScreen = () => {
 
   const sendReservation = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/reserve/1', {
-        startDate,
-        endDate,
+      startDateTemp = new Date(startDate)
+      endDateTemp = new Date(endDate)
+      console.log({
+        startDate: startDateTemp.toISOString(),
+        endDate: endDateTemp.toISOString(),
+      })
+      const response = await axios.post('http://192.168.1.128:3000/reserves/1', {
+        startDate: startDateTemp.toISOString(),
+        endDate: endDateTemp.toISOString(),
       });
 
       console.log('Reservation sent successfully:', response.data);
     } catch (error) {
-      console.error('Error sending reservation:', error.message);
+      alert(error.response.data.message)
+      console.error('Error sending reservation:', error.response.data.message);
     }
   };
 

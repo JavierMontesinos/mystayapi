@@ -5,19 +5,21 @@ import { TitleText, SubTitleText } from '../components/CustomText'
 import axios from 'axios';
 
 
-const PayScreen = () => {
+const PayScreen = ({ navigation }) => {
     const [bank, setBank] = React.useState('');
     const [cvv, setCvv] = React.useState('');
     
-    const handlePayment = async () => {
+    const handlePayment = async (navigation) => {
       try {
-        const response = await axios.post('http://localhost:3000/pay/1', {
+        const response = await axios.post('http://192.168.1.128:3000/pay/1', {
           bank,
           cvv,
         });
-        console.log('Payment successful:', response.data);
-        // Handle success scenario (e.g., navigate to a success screen)
+        alert("Se ha pagado correctamente")
+        
+        navigation.navigate("Profile")
       } catch (error) {
+        alert(error.response.data.message)
         console.error('Payment failed:', error.message);
         // Handle error scenario (e.g., display an error message to the user)
       }
@@ -44,7 +46,7 @@ const PayScreen = () => {
                 />
             </View>
             <View style={styles.buttonContainer}>
-                <CustomButton icon={""} text={"Confirm"} func={handlePayment} />
+                <CustomButton icon={""} text={"Confirm"} func={() => handlePayment(navigation)} />
             </View>
         </View>
   );

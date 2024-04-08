@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/JavierMontesinos/mystayapi/mystay-api/handlers"
@@ -23,9 +22,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	e.GET("/user/:id", routes.GetUser)
-	e.Logger.Fatal(e.Start(":3000"))
+	routes.Gorm.AutoMigrate(&models.Servicio{}, &models.Reserva{}, &models.Client{})
 
-	routes.Gorm.AutoMigrate(&models.Client{}, &models.Servicio{}, &models.Reserva{})
-	fmt.Println(routes.Gorm.Migrator().HasTable(&models.Client{}))
+	e.GET("/clients/:id", routes.GetClient)
+	e.PUT("/clients/:id", routes.UpdateClient)
+
+	e.POST("/reserves/:id", routes.NewReserve)
+
+	e.POST("/services/:id", routes.NewService)
+
+	e.POST("/pay/:id", routes.CheckOutPay)
+	e.GET("/factura/:id", routes.GetFactura)
+
+	e.Logger.Fatal(e.Start(":3000"))
 }
