@@ -18,7 +18,7 @@ const NewReserveScreen = ({ navigation }) => {
         startDate: startDateTemp.toISOString(),
         endDate: endDateTemp.toISOString(),
       })
-      const response = await axios.post('http://192.168.1.141:3000/reserves/1', {
+      const response = await axios.post('http://192.168.1.139:8443/reserves/1', {
         startDate: startDateTemp.toISOString(),
         endDate: endDateTemp.toISOString(),
       });

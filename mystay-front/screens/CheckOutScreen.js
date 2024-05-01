@@ -7,7 +7,7 @@ import axios from 'axios';
 const CheckOutScreen = ({ navigation }) => {
   const handleFactura = async () => {
     try {
-      const response = await axios.get('http://192.168.1.141:3000/factura/1');
+      const response = await axios.get('http://192.168.1.139:8443/factura/1');
       alert(`Pagado: ${response.data.message}`)
     } catch (error) {
       alert(error.response.data.message)

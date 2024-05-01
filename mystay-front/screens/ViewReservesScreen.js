@@ -15,7 +15,7 @@ const ViewReservesScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://192.168.1.141:3000/reserves/1');
+      const response = await axios.get('http://192.168.1.139:8443/reserves/1');
       console.log(response.data)
       setReservations(response.data);
     } catch (error) {

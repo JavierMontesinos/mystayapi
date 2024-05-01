@@ -3,38 +3,47 @@ import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import { TitleText, SubTitleText } from '../components/CustomText'
 import axios from 'axios';
+import AuthContext from '../utils/AuthProvider';
+import { get, put } from '../utils/Requests';
 
 const EditProfileScreen = ({ navigation }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [address, setAddress] = useState('');
-  const [zip, setZip] = useState('');
-  const [email, setEmail] = useState('');
+  const [user, setUser] = useState({})
+  const [nombre, setNombre] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [dni, setDni] = useState('');
+  const [premium, setPremium] = useState('No premium');
+  const [correo, setCorreo] = useState('');
+
+  const { getUserId } = React.useContext(AuthContext);
 
   const handleSubmit = async (navigation) => {
     try {
-        const user = { firstName, lastName, address, zip, email };
-        const response = await axios.put('http://192.168.1.141:3000/clients/1', user);
+        const response = await put(`clientes/${getUserId()}`, { nombre, telefono, dni, correo, gasto: 0.0});
+        
         console.log('PUT request successful:', response.data);
 
         alert('Datos actualizados');
         navigation.goBack();
       } catch (error) {
-        console.error('Error sending PUT request:', error);
+
+        console.error('Error sending PUT request:', error.response);
       }
   };
 
   const getUserData = async () => {
     try {
-      const response = await axios.get('http://192.168.1.141:3000/clients/1');
+      const response = await get(`clientes/${getUserId()}`);
       const user = response.data;
-      setFirstName(user.firstName);
-      setLastName(user.lastName);
-      setAddress(user.address);
-      setZip(user.zip);
-      setEmail(user.email);
+      console.log(user);
+
+      setNombre(user.nombre);
+      setTelefono(user.telefono);
+      setDni(user.dni);
+      setPremium(user.premium ? 'Premium' : 'No premium');
+      setCorreo(user.correo);
     } catch (error) {
       console.error('Error fetching user data:', error);
+      console.log(error.response.data)
       alert('Error fetching user data!');
     }
   };
@@ -50,30 +59,30 @@ const EditProfileScreen = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <TextInput
           style={[styles.textInput, { marginRight: 10}]}
-          placeholder="First Name"
-          value={firstName}
-          onChangeText={setFirstName}
+          placeholder="Nombre"r
+          value={nombre}
+          onChangeText={setNombre}
         />
         <TextInput
           style={styles.textInput}
-          placeholder="Last Name"
-          value={lastName}
-          onChangeText={setLastName}
+          placeholder="Nº de Teléfono"
+          value={telefono}
+          onChangeText={setTelefono}
         />
       </View>
       <View style={styles.inputContainer}>
         <TextInput
           style={[styles.textInput, { marginRight: 10}]}
-          placeholder="Full Address"
-          value={address}
-          onChangeText={setAddress}
+          placeholder="DNI"
+          value={dni}
+          onChangeText={setDni}
         />
 
-        <TextInput style={styles.textInput} placeholder="ZIP" value={zip} onChangeText={setZip} />
+        <Text style={styles.textInput}>{premium}</Text>
       </View>
       
       <View style={styles.emailContainer}>
-        <TextInput style={styles.emailInput} placeholder="Email" value={email} onChangeText={setEmail} />
+        <TextInput style={styles.emailInput} placeholder="Email" value={correo} onChangeText={setCorreo} />
       </View>
       <CustomButton text={"Submit"} icon={""} func={() => handleSubmit(navigation)} />
     </View>
@@ -100,7 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     flex: 1, // equally distribute space between the two inputs in this container
   },
-  fullAddressInput: {
+  fulldniInput: {
     padding: 10,
     backgroundColor: '#e0e0e0',
     borderRadius: 5,
