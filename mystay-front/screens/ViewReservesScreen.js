@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 import { TitleText } from '../components/CustomText'
-import axios from 'axios';
-
+import { get } from '../utils/Requests';
+import AuthContext from '../utils/AuthProvider';
 
 const ViewReservesScreen = () => {
   const [reservations, setReservations] = useState([]);
 
-  useFocusEffect(() => {
+  const isFocused = useIsFocused();
+  const { signOut } = React.useContext(AuthContext);
+
+  useEffect(() => {
     fetchData();
-  });
+  }, [isFocused]);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://192.168.1.139:8443/reserves/1');
-      console.log(response.data)
-      setReservations(response.data);
+      const reservas = await get("cliente/reservas");
+      console.log(reservas)
+      setReservations(reservas.map(reserva => ({startDate: reserva.fechaInicio, endDate: reserva.fechaFinal, hotel: reserva.hotel.nombre, habitacion: reserva.habitacion.numero})));
     } catch (error) {
-      console.error('Error fetching data:', error.message);
+      if (validJWT(error.response?.data, signOut)) {
+        console.log(error)
+        console.error('Error fetching data:', error.response);
+        alert(error)
+      }
     }
   };
 
@@ -40,6 +47,8 @@ const ViewReservesScreen = () => {
           <Text style={styles.info}>{formatDate(reservation.endDate)}</Text>
           <Text style={styles.label}>Hotel:</Text>
           <Text style={styles.info}>{reservation.hotel}</Text>
+          <Text style={styles.label}>Habitación:</Text>
+          <Text style={styles.info}>{reservation.habitacion}</Text>
         </View>
       ))}
     </ScrollView>

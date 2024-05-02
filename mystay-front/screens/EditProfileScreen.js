@@ -1,56 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { useIsFocused } from "@react-navigation/native";
+
 import CustomButton from '../components/CustomButton';
-import { TitleText, SubTitleText } from '../components/CustomText'
-import axios from 'axios';
 import AuthContext from '../utils/AuthProvider';
-import { get, put } from '../utils/Requests';
+import { TitleText, SubTitleText } from '../components/CustomText'
+
+import { get, put, validJWT } from '../utils/Requests';
 
 const EditProfileScreen = ({ navigation }) => {
-  const [user, setUser] = useState({})
   const [nombre, setNombre] = useState('');
   const [telefono, setTelefono] = useState('');
   const [dni, setDni] = useState('');
   const [premium, setPremium] = useState('No premium');
   const [correo, setCorreo] = useState('');
 
-  const { getUserId } = React.useContext(AuthContext);
+  const { signOut } = React.useContext(AuthContext);
+
+  const isFocused = useIsFocused();
 
   const handleSubmit = async (navigation) => {
     try {
-        const response = await put(`clientes/${getUserId()}`, { nombre, telefono, dni, correo, gasto: 0.0});
-        
-        console.log('PUT request successful:', response.data);
-
+        await put("cliente", { nombre, telefono, dni, correo, gasto: 0.0});
         alert('Datos actualizados');
         navigation.goBack();
       } catch (error) {
-
-        console.error('Error sending PUT request:', error.response);
+        if (validJWT(error.response?.data, signOut)) {
+          console.log(error)
+          alert(error)
+        }
       }
   };
 
   const getUserData = async () => {
     try {
-      const response = await get(`clientes/${getUserId()}`);
-      const user = response.data;
-      console.log(user);
-
+      const user = await get("cliente");
       setNombre(user.nombre);
       setTelefono(user.telefono);
       setDni(user.dni);
       setPremium(user.premium ? 'Premium' : 'No premium');
       setCorreo(user.correo);
     } catch (error) {
-      console.error('Error fetching user data:', error);
-      console.log(error.response.data)
-      alert('Error fetching user data!');
+      if (validJWT(error.response?.data, signOut)) {
+        console.log(error)
+        alert(error)
+      }
     }
   };
 
   useEffect(() => {
-    getUserData();
-  }, []);
+    if (isFocused){
+      getUserData();
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>

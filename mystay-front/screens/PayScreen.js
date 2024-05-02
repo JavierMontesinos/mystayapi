@@ -2,26 +2,27 @@ import React from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import { TitleText, SubTitleText } from '../components/CustomText'
-import axios from 'axios';
+import AuthContext from '../utils/AuthProvider';
 
+import { post } from '../utils/Requests';
 
 const PayScreen = ({ navigation }) => {
     const [bank, setBank] = React.useState('');
     const [cvv, setCvv] = React.useState('');
+
+    const { signOut } = React.useContext(AuthContext)
     
     const handlePayment = async (navigation) => {
       try {
-        const response = await axios.post('http://192.168.1.139:8443/pay/1', {
-          bank,
-          cvv,
-        });
+        await post('cliente/pagar', {bank,cvv});
         alert("Se ha pagado correctamente")
         
         navigation.navigate("Profile")
       } catch (error) {
-        alert(error.response.data.message)
-        console.error('Payment failed:', error.message);
-        // Handle error scenario (e.g., display an error message to the user)
+        if (validJWT(error.response?.data, signOut)) {
+          console.log(error.response?.data)
+          alert(error.response?.data)
+        }
       }
     };
 

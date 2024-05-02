@@ -12,7 +12,6 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   let userToken = null;
-  let userId = null;
 
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
@@ -21,7 +20,6 @@ const App = () => {
           return {
             ...prevState,
             userToken: action.token,
-            userId: action.id,
             isLoading: false,
           };
         case 'SIGN_IN':
@@ -29,14 +27,12 @@ const App = () => {
             ...prevState,
             isSignout: false,
             userToken: action.token,
-            userId: action.id,
           };
         case 'SIGN_OUT':
           return {
             ...prevState,
             isSignout: true,
             userToken: null,
-            userId: null,
           };
         default:
           return prevState;
@@ -46,7 +42,6 @@ const App = () => {
       isLoading: true,
       isSignout: false,
       userToken: null,
-      userId: null,
     }
   );
 
@@ -54,13 +49,11 @@ const App = () => {
     const bootstrapAsync = async () => {
       try {
         userToken = await SecureStore.getItemAsync('userToken');
-        userId = await SecureStore.getItemAsync('userId');
-        console.log(userId)
       } catch (e) {
         console.error("Can't restore token: ", e);
       }
 
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken, id: userId });
+      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
 
     bootstrapAsync();
@@ -70,35 +63,26 @@ const App = () => {
     () => ({
       signIn: async (postData) => {
         try {
-          const response = await axios.post('http://192.168.1.139:8443/login', postData);
+          const response = await axios.post('http://192.168.1.139:8443/login', postData, {timeout: 3000});
 
-          let data = response.data;
-
-          await SecureStore.setItemAsync('userToken', data.token);
-          await SecureStore.setItemAsync('userId', data.id.toString());
-
-          userToken = data.token;
-          userId = data.id.toString();
-
-          dispatch({ type: 'SIGN_IN', token: data.token, id: data.id.toString() });
+          await SecureStore.setItemAsync('userToken', response.data);
+          dispatch({ type: 'SIGN_IN', token: response.data });
         } catch (error) {
-          console.log('Error:', error.message);
-          alert(error.response.data);
+          if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
+            alert('No estas conectado a la wifi del hotel');
+          } else if (axios.isAxiosError(error) && !error.response) {
+            alert('No estas conectado a la wifi del hotel');
+          } else {
+            alert(error.response.data);
+            console.log('Error:', error.message);
+          }
         }
       },
       signOut: async () => {
         await SecureStore.deleteItemAsync('userToken');
-        await SecureStore.deleteItemAsync('userId');
         userToken = null;
-        userId = null;
         dispatch({ type: 'SIGN_OUT' });
-      },
-      getUserToken: () => {
-        return userToken;        
-      },
-      getUserId: () => {
-        return userId;
-      },
+      }
     }),
     []
   );
@@ -111,7 +95,7 @@ const App = () => {
               headerShown: false,
             })}
           >
-          {(state.userToken == null && state.userId == null) ? (
+          {state.userToken == null ? (
           
             <Stack.Screen name="Login" component={LoginScreen} />
           ) : (

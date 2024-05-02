@@ -15,16 +15,59 @@ const getToken = async () => {
 }
 
 export const get = async (path, headers) => {
-    headers = await headerBuilder(headers);
-    return await axios.get(`${BASE}/${path}`, {headers});
+    try{
+        headers = await headerBuilder(headers);
+        const response = await axios.get(`${BASE}/${path}`, {headers, timeout: 3000});
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
+            throw new Error('No estas conectado a la wifi del hotel');
+        } else if (axios.isAxiosError(error) && !error.response) {
+            throw new Error('No estas conectado a la wifi del hotel');
+        } else {
+            throw error;
+        }
+    }
 }
 
-export const post = async (path, body,headers,) => {
-    headers = await headerBuilder(headers);
-    return await axios.post(`${BASE}/${path}`, body, {headers});
-}
+export const post = async (path, body, headers) => {
+    try {
+        headers = await headerBuilder(headers);
+        const response = await axios.post(`${BASE}/${path}`, body, { headers, timeout: 3000 });
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
+            throw new Error('No estas conectado a la wifi del hotel');
+        } else if (axios.isAxiosError(error) && !error.response) {
+            throw new Error('No estas conectado a la wifi del hotel');
+        } else {
+            throw error;
+        }
+    }
+};
 
 export const put = async (path, body, headers) => {
-    headers = await headerBuilder(headers);
-    return await axios.put(`${BASE}/${path}`, body, {headers});
+    try{
+        headers = await headerBuilder(headers);
+        const response = await axios.put(`${BASE}/${path}`, body, {headers, timeout: 3000});
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
+            throw new Error('No estas conectado a la wifi del hotel');
+        } else if (axios.isAxiosError(error) && !error.response) {
+            throw new Error('No estas conectado a la wifi del hotel');
+        } else {
+            throw error;
+        }
+    }
+}
+
+export const validJWT = (errMsg, signOut) => {
+    if (errMsg === "Invalid JWT Token"){
+        alert("Sesion invalida vuelve a entrar")
+        signOut()
+        return false;
+    }
+
+    return true;
 }

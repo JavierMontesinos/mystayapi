@@ -2,15 +2,23 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import { TitleText } from '../components/CustomText'
-import axios from 'axios';
+
+import { get } from '../utils/Requests';
+import AuthContext from '../utils/AuthProvider';
+
 
 const CheckOutScreen = ({ navigation }) => {
+  const { signOut } = React.useContext(AuthContext);
+
   const handleFactura = async () => {
     try {
-      const response = await axios.get('http://192.168.1.139:8443/factura/1');
-      alert(`Pagado: ${response.data.message}`)
+      const factura = await get('cliente/factura');
+      alert(`Pagado: ${factura}`)
     } catch (error) {
-      alert(error.response.data.message)
+      if (validJWT(error.response?.data, signOut)) {
+        console.log(error.response?.data)
+        alert(error.response?.data)
+      }
     }
   };
 

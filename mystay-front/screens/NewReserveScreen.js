@@ -1,35 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import { View, Text, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Calendar } from 'react-native-calendars';
-import { TitleText, SubTitleText } from '../components/CustomText'
+import { useIsFocused } from '@react-navigation/native';
+
+import { TitleText } from '../components/CustomText'
 import CustomButton from '../components/CustomButton';
-import axios from 'axios';
+import { get, post, validJWT } from '../utils/Requests';
+import AuthContext from '../utils/AuthProvider';
+
+import RNPickerSelect from 'react-native-picker-select';
 
 const NewReserveScreen = ({ navigation }) => {
+  const [selectedHotel, setSelectedHotel] = useState(null);
+  const [hoteles, setHoteles] = useState([]);
+
   const [selectedDate, setSelectedDate] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
+  const isFocused = useIsFocused();
+  const { signOut } = React.useContext(AuthContext);
+
   const sendReservation = async (navigation) => {
     try {
-      startDateTemp = new Date(startDate)
-      endDateTemp = new Date(endDate)
-      console.log({
-        startDate: startDateTemp.toISOString(),
-        endDate: endDateTemp.toISOString(),
-      })
-      const response = await axios.post('http://192.168.1.139:8443/reserves/1', {
-        startDate: startDateTemp.toISOString(),
-        endDate: endDateTemp.toISOString(),
+      let startDateTemp = new Date(startDate)
+      let endDateTemp = new Date(endDate)
+      
+      const response = await post('cliente/reservas', {
+        fechaInicio: startDateTemp.toISOString(),
+        fechaFinal: endDateTemp.toISOString(),
+        hotel: selectedHotel,
       });
 
-      alert("Se ha reservado correctamente")
+      alert(response)
 
       navigation.navigate("Profile")
-      console.log('Reservation sent successfully:', response.data);
     } catch (error) {
-      alert(error.response.data.message)
-      console.error('Error sending reservation:', error.response.data.message);
+      console.log(error)
+      if (error instanceof RangeError) {
+        alert("Escoge una fecha de entrada y salida");
+      } else {
+        if (validJWT(error.response?.data, signOut)) {
+          console.log(error.response.data)
+          alert(error.response.data)
+        }
+      }
     }
   };
 
@@ -50,12 +67,29 @@ const NewReserveScreen = ({ navigation }) => {
     setSelectedDate(newDate);
   };
 
+  const getHoteles = async () => {
+    try {
+      const hoteles = await get("hoteles");
+      setHoteles(hoteles.map(hotel => ({label: hotel.nombre, value: hotel.id })))
+    } catch(error) {
+      if (validJWT(error.response?.data, signOut)) {
+        console.log(error.response?.data)
+        alert(error.response?.data)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (isFocused){
+      getHoteles();
+    }
+  }, [isFocused])
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <TitleText text={"Reserva"} style={{textAlign: "center"}} />
       
       <Calendar
-        // ...other calendar props (e.g., month, current, minDate, maxDate)
         onDayPress={handleSelectDate}
         theme={{
           calendarBackground: '#36454F', // Light gray background
@@ -73,10 +107,21 @@ const NewReserveScreen = ({ navigation }) => {
         <Text style={styles.dateLabel}>Fecha Salida:</Text>
         <Text style={styles.dateValue}>{endDate || 'Sin fecha seleccionada'}</Text>
       </View>
-      <View style={{ flex: 1, alignItems: 'flex-end', marginTop: 20}}>
+
+      <View style={styles.container}>
+        <Text style={styles.headerText}>Elige el hotel para hacer la reserva</Text>
+        <RNPickerSelect
+          onValueChange={(value) => setSelectedHotel(value)}
+          items={ hoteles }
+          placeholder={{ label: 'Elige el hotel para hacer la reserva', value: null }}
+          value={selectedHotel}
+        />
+      </View>
+
+      <View style={{ flex: 1, alignItems: 'flex-end', marginTop: 5, marginBottom: 40}}>
         <CustomButton icon={""} text={"Submit"} func={() => sendReservation(navigation)} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
