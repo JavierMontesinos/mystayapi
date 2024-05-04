@@ -15,7 +15,7 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <TitleText text={"MYSTAY"} />
       <Image
-        source={require('../assets/MyStayLogo.png')}
+        source={require('../assets/MyStayLogo.png')}  
         style={styles.image}
         resizeMode="contain"
       />
@@ -23,15 +23,21 @@ const LoginScreen = () => {
         style={styles.input}
         placeholder="DNI"
         value={dni}
+        testID="dni-login"
         onChangeText={setDni}
       />
       <TextInput
         style={styles.input}
         placeholder="Número de habitación"
         value={nhab}
+        testID="nhab-login"
         onChangeText={setNhab}
       />
-      <CustomButton text="Login" func={() => signIn({ dni, nhab })} />
+      <CustomButton
+        text="Login"
+        testID="btn-login"
+        func={() => signIn({ dni, nhab })} 
+      />
     </View>
   );
 };

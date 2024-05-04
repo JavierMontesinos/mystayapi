@@ -15,19 +15,27 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.grupo1.mystay"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.grupo1.mystay"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-secure-store"
-    ]
+      "expo-secure-store",
+      "@config-plugins/detox"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "0ff873af-eb16-44a5-b243-24f3bbf9813f"
+      }
+    }
   }
 }
